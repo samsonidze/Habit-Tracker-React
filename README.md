@@ -1,75 +1,35 @@
-# React + TypeScript + Vite
+# Habit Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A weekly habit tracker: add habits, tick them off day by day, see your current streak, and page back and forth through weeks. Everything is persisted in the browser, so there's no account and no backend.
 
-Currently, two official plugins are available:
+**Live demo:** https://habit-tracker-react-steel.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
+- **Weekly grid** – Monday-to-Sunday columns built with `date-fns`; previous/next buttons move the window a week at a time
+- **One-tap completion** – toggle a habit for any past or current day; future days are disabled
+- **Streak counter** – consecutive-day streak computed from the completion history
+- **Persistence** – habits are saved to `localStorage` through a typed `useLocalStorage` hook that revives ISO date strings back into `Date` objects on load
+- **Typed state** – a `HabitContext` + `useHabits()` hook expose `addHabit`, `toggleHabit` and `deleteHabit` with full TypeScript types
+- Dark UI with Tailwind CSS, `tailwind-merge` for composable button variants
 
-## React Compiler
+## Tech
+React 19 (with the React Compiler) · TypeScript 6 · Vite · Tailwind CSS 4 · date-fns · ESLint (typescript-eslint, react-hooks)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Structure
+```
+src/
+├── context/
+│   ├── HabitProvider.tsx   # State + actions, backed by useLocalStorage
+│   └── useHabits.ts        # Context, Habit type and consumer hook
+├── hooks/useLocalStorage.ts
+└── components/             # Header (week nav), HabitForm, HabitList, Button
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Run locally
+```bash
+npm install
+npm run dev
 ```
+
+## Acknowledgements
+Based on Web Dev Simplified's habit-tracker exercise (MIT, see `LICENSE`).
